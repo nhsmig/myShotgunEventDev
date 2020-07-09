@@ -85,6 +85,6 @@ def clientOK2finishedFlag(sg, logger, event, args):
     #필터링된 이벤트 내용을 문자열(딕셔너리)로 반환함
     # logger.info("%s" % str(event)) 
 
-    # 필터링된 이벤트 딕셔너리를 key와 value로 반환
+    # 필터링된 이벤트 딕셔너리를 key와 value로 반환함
     # for k, v in event.iteritems():
     #     logger.info("%s, %s" % (k, v))
