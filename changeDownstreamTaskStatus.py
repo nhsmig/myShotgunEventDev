@@ -107,7 +107,7 @@ def changeDownstreamStatus(sg, logger, event, args):
             ],
             ['sg_status_list', 'entity', 'project']
         )                                                                                           
-    #전달된 태스크의 바뀐 스테이터스 value 체크
+    #전달된 태스크의 바뀐 스테이터스 value 체크??
     currentTaskStep = event['entity']['name']
     currentTaskStatus = event['meta']['new_value']                                       
     
@@ -117,7 +117,7 @@ def changeDownstreamStatus(sg, logger, event, args):
     targetStatusGroup_onGoing = ['wip', 'rev', 'rdy', 'ret']
     targetStatusGroup_finished = ['ok', 'pub', 'fin']
  
-    #모든 다운스트림 태스크의 스테이터스에 대한 처리.!!!
+    #모든 다운스트림 태스크의 스테이터스에 대한 처리
     
     if downstreamTask:
         for task in downstreamTask:
