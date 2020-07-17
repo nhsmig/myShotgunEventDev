@@ -11,6 +11,7 @@
 import os
 import logging
 import shotgun_api3
+import pprint as pp
 
 def registerCallbacks(reg):
     # Register a callback to into the event processing system.
@@ -70,12 +71,34 @@ def clientOK2taskFinished(sg, logger, event, args):
     # 필터링된 이벤트 딕셔너리를 key와 value로 반환
     for k, v in event.iteritems():
         logger.info("%s, %s" % (k, v))
+
+
     entity_id = event["entity"]["id"]
     entity_name = event["entity"]["name"]
+    clientApproval = event['meta']['new_value']
     logger.info("ID : %s" % str(entity_id))
     logger.info("name : %s" % str(entity_name))
+    logger.info('clientOK: %s' % str(clientApproval))
 
+    currentVersion = sg.find_one(
+        'Version',
+        [["id", "is", entity_id]],
+        ['sg_task', 'entity', 'sg_status_list', 'sg_task.Task.sg_status_list']
+    )
+    pp.pprint(currentVersion)
 
+    currentVersionStatus = currentVersion['sg_status_list']
+    currentTaskStatus = currentVersion['sg_task.Task.sg_status_list']
+
+    if clientApproval == True:
+        sg.update(
+            'Task',
+            currentVersion['sg_task']['id'],
+            {'sg_status_list':'fin'}
+        )
+    else:
+        pass
+    
 
 '''
 def version_status_changed(sg, logger, event, args):
