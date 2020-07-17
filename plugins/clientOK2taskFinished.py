@@ -1,3 +1,4 @@
+#-*-encoding:utf-8-*-
 # Copyright 2018 Autodesk, Inc.  All rights reserved.
 #
 # Use of this software is subject to the terms of the Autodesk license agreement
@@ -27,7 +28,7 @@ def registerCallbacks(reg):
     script_name = 'clientOK2taskFinished'
     script_key = 'zqtezL$gvumodcykerubqil2s'
 
-    eventFilter = {'Shotgun_Version_Change': ['sg_status_list']}
+    eventFilter = {'Shotgun_Version_Change': ['client_approved']}
 
     args = {
         # "date_approved_field": "client_approved_at",
@@ -38,7 +39,7 @@ def registerCallbacks(reg):
     reg.registerCallback(
         script_name,
         script_key,
-        version_status_changed,
+        clientOK2taskFinished,
         eventFilter,
         None,
     )
@@ -46,10 +47,37 @@ def registerCallbacks(reg):
     # Set the logging level for this particular plugin. Let debug and above
     # messages through (don't block info, etc). This is particularly usefull
     # for enabling and disabling debugging on a per plugin basis.
-    # reg.logger.setLevel(logging.DEBUG)
+    reg.logger.setLevel(logging.DEBUG)
+
+
+def clientOK2taskFinished(sg, logger, event, args):
+    """
+    A callback that logs its arguments.
+
+    :param sg: Shotgun API handle.
+    :param logger: Logger instance.
+    :param event: A Shotgun EventLogEntry entity dictionary.
+    :param args: Any additional misc arguments passed through this plugin.
+    """
+ 
+    if not event:
+        return
+ 
+ 
+    #필터링된 이벤트 내용을 문자열(딕셔너리)로 반환
+    # logger.info("%s" % str(event)) 
+
+    # 필터링된 이벤트 딕셔너리를 key와 value로 반환
+    for k, v in event.iteritems():
+        logger.info("%s, %s" % (k, v))
+    entity_id = event["entity"]["id"]
+    entity_name = event["entity"]["name"]
+    logger.info("ID : %s" % str(entity_id))
+    logger.info("name : %s" % str(entity_name))
 
 
 
+'''
 def version_status_changed(sg, logger, event, args):
     """
     A callback that logs its arguments.
@@ -139,3 +167,4 @@ def version_status_changed(sg, logger, event, args):
         [logger.debug("    %s" % bc) for bc in batch_cmds]
         results = sg.batch(batch_cmds)
         logger.debug("    RESULTS: %s" % results)
+'''
